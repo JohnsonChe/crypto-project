@@ -3,7 +3,13 @@ const express = require('express');
 
 const app = express();
 
-const PORT = 3000;
+const PORT = 5000;
+
+// LOGIN HANDLER
+app.use('/login', (req,res) => {
+  console.log('Received Login request')
+  return res.send('HI');
+})
 
 
 // GLOBAL EVENT HANDLER
