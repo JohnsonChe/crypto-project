@@ -6,7 +6,9 @@ import './App.css';
 async function loginUser (credentials){
   return fetch('http://localhost:5000/login', {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(credentials)
   })
   .then(data => data.json())
@@ -17,8 +19,12 @@ function App() {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
+    console.log('username', username);
+    console.log('password', password);
     e.preventDefault();
+
+    
     const token = await loginUser({
       username,
       password
@@ -40,7 +46,8 @@ function App() {
               <form class="flex flex-col pt-3 md:pt-8" onSubmit={handleSubmit}>
                 <div class="flex flex-col pt-4">
                   <label for="username" class="text-lg">Username</label>
-                  <input type="text" id="username" placeholder="Username" onChange={e => setUserName(e.target.value)} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
+                  <input type="text" id="username" placeholder="Username" onChange={e => {console.log(username);
+                    setUserName(e.target.value)}} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
                 </div>
 
                 <div class="flex flex-col pt-4">

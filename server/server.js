@@ -1,13 +1,25 @@
 
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
+const cors = require('cors');
+const corsOptions = {
+  origin:'*', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200,
+}
 
 const PORT = 5000;
 
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
 // LOGIN HANDLER
-app.use('/login', (req,res) => {
+app.post('/login', (req,res) => {
   console.log('Received Login request')
+  console.log('Request Body: ', req.body);
   return res.send('HI');
 })
 
