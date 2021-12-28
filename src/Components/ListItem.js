@@ -5,6 +5,8 @@ function ListItem(props) {
   const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
+    maximumFractionDigits: 4,
+    minimumFractionDigits: 0
   });
 
   return (
@@ -35,7 +37,7 @@ function ListItem(props) {
       </td>
       <td className="px-5 py-2 border-b border-gray-200 bg-white text-md">
         <p className="text-gray-900 whitespace-no-wrap">
-          {props.crypto.circulating_supply}
+          {props.crypto.circulating_supply.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
         </p>
       </td>
       <td className="px-5 py-2 border-b border-gray-200 bg-white text-md">

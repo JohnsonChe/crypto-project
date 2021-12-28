@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import ListItem from './ListItem';
 import Pagination from './Pagination';
 
 function List(props) {
   const [page, setPage] = useState(1);
+  const [maxPages, setMaxPages] = useState(1);
   const [listItems, setListItems] = useState([]);
   const pageItems = 10;
-
-  console.log(props.cryptoList);
 
   useEffect(() => {
     try {
@@ -19,10 +18,20 @@ function List(props) {
         counter++;
       }
       setListItems(listItemArr);
+      setMaxPages(Math.floor(cryptoList.length / pageItems));
     } catch (error) {
       console.log(`${error} Cannot Render Crypto List`)
     }
   }, [page, props])
+
+  const handlePageClick = (value) => {
+    if (value <= 0)
+      setPage(1);
+    else if (value >= maxPages)
+      setPage(maxPages);
+    else
+      setPage(value);
+  }
 
 
   return (
@@ -61,7 +70,7 @@ function List(props) {
                 {listItems}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination page={page} clickFn={handlePageClick} />
           </div>
         </div>
       </div>
