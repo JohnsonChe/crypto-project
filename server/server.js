@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-// const requestController = require('./Controllers/requestController');
+const requestController = require('./Controllers/requestController');
 
 const app = express();
 const cors = require('cors');
@@ -19,9 +19,30 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // LOGIN HANDLER
-app.post('/login', (req, res) => {
+app.post('/login', requestController.verifyUser, (req, res) => {
   console.log('Received Login request')
   console.log('Request Body: ', req.body);
+  if (res.locals.response)
+    return res.json({ authorized: true, data: res.locals.response });
+  else
+    return res.json({ authorized: false });
+})
+
+// REGISTER HANDLER
+app.post('/register', requestController.addUser, (req, res) => {
+  console.log('Received Register request')
+  console.log('Request Body: ', req.body);
+  if (res.locals.response)
+    return res.json({ authorized: true });
+  else
+    return res.json({ authorized: false });
+})
+
+
+// ADD WATCHLIST HANDLER
+app.post('/addWatch', (req, res) => {
+  // console.log('Received Register request')
+  // console.log('Request Body: ', req.body);
   return res.json({ authorized: true });
 })
 

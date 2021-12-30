@@ -2,30 +2,60 @@ import React, { useState, useEffect } from 'react';
 import ListItem from './ListItem';
 import Pagination from './Pagination';
 
-function List(props) {
+function WatchList(props) {
   const [page, setPage] = useState(1);
   const [maxPages, setMaxPages] = useState(1);
+  const [watchListData, setWatchListData] = useState();
   const [listItems, setListItems] = useState([]);
-  const pageItems = 10;
+  let pageItems = 5;
+
+  useEffect(() => {
+    const { watchList } = props;
+    fetchWatchList(watchList)
+    // .then(data => setWatchListData(data))
+    // console.log(data);
+    // setWatchListData(data)
+  }, [])
 
   useEffect(() => {
     try {
-      const { cryptoList } = props;
-      if (cryptoList) {
+      if (watchListData) {
+        console.log('watchListData useEffect #2', watchListData);
         const listItemArr = [];
         let counter = Math.floor(page * 10 - 10);
-        for (let i = 0; i < pageItems; i++) {
-          listItemArr.push(<ListItem key={i} crypto={cryptoList[counter]} fav={false} />);
+        for (let i = 0; i < Math.min(pageItems, watchListData.length); i++) {
+          listItemArr.push(<ListItem key={i} crypto={watchListData[counter]} fav={true} buttonClick={handleButton} />);
           counter++;
         }
         setListItems(listItemArr);
-        setMaxPages(Math.floor(cryptoList.length / pageItems));
+        console.log(listItems);
+        setMaxPages(Math.floor(watchListData.length / pageItems));
       }
+
     } catch (error) {
       console.log(`${error} Cannot Render Crypto List`)
     }
-  }, [page, props])
+  }, [page, watchListData])
 
+  async function fetchWatchList(watchList) {
+
+    const data = await Promise.all(watchList.map(element => _fetch(element)));
+    setWatchListData(data);
+    setTimeout(fetchWatchList, 10000, watchList)
+    // return await Promise.all(watchList.map(element => _fetch(element)));
+
+    async function _fetch(id) {
+      try {
+        const data = await fetch(`https://api.coingecko.com/api/v3/coins/${id}`);
+        return await data.json();
+      } catch (error) {
+        console.log(error, 'Error Fetching Watchlist item: ' + id)
+      }
+    }
+  }
+
+
+  //PAGE Click
   const handlePageClick = (value) => {
     if (value <= 0)
       setPage(1);
@@ -35,6 +65,16 @@ function List(props) {
       setPage(value);
   }
 
+  //HANDLE LIST ITEM CLICK
+  const handleButton = (value, data) => {
+    if (value === '+') {
+      setWatchListData([...watchListData, data]);
+    } else if (value === '-') {
+      let updatedWatchList = [...watchListData];
+      updatedWatchList = updatedWatchList.filter(element => element !== data.id)
+      setWatchListData(updatedWatchList);
+    }
+  }
 
   return (
 
@@ -81,4 +121,4 @@ function List(props) {
   )
 }
 
-export default List;
+export default WatchList;
