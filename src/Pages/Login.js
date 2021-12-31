@@ -22,7 +22,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = await loginUser({
-      email,
+      email: email.toLowerCase(),
       password
     });
     if (token.authorized) {

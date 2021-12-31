@@ -38,13 +38,27 @@ app.post('/register', requestController.addUser, (req, res) => {
     return res.json({ authorized: false });
 })
 
-
 // ADD WATCHLIST HANDLER
-app.post('/addWatch', (req, res) => {
-  // console.log('Received Register request')
+app.put('/addwatch', requestController.addWatch, (req, res) => {
+  console.log('Received AddWatch request')
   // console.log('Request Body: ', req.body);
   return res.json({ authorized: true });
 })
+
+//GET WATCHLIST HANDLER
+app.post('/getwatch', requestController.getWatch, (req, res) => {
+  console.log('Received GetWatch request')
+  // console.log('Request Body: ', req.body);
+  return res.json({ watchList: res.locals.response });
+})
+
+//REMOVE WATCHLIST HANDLER
+app.put('/removewatch', requestController.removeWatch, (req, res) => {
+  console.log('Received RemoveWatch request')
+  // console.log('Request Body: ', req.body);
+  return res.json({ watchList: res.locals.response });
+})
+
 
 // app.get('/other', requestController.getOthers, (req, res) => {
 //   return res.json();

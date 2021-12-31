@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 async function registerUser(credentials) {
-  return fetch('http://localhost:5000/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then(data => data.json())
+  try {
+    return fetch('http://localhost:5000/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(credentials)
+    })
+      .then(data => data.json())
+  } catch (error) {
+    throw new Error('Unable to create user profile in DB');
+  }
 }
 
 function Register() {
@@ -27,7 +31,7 @@ function Register() {
       const token = await registerUser({
         firstName,
         lastName,
-        email,
+        email: email.toLowerCase(),
         password
       });
 

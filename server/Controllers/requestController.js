@@ -40,7 +40,7 @@ requestController.verifyUser = async (req, res, next) => {
     const data = await User.findOne({
       email: email,
       password: password
-    })
+    });
 
     if (!data)
       res.locals.response = false;
@@ -48,6 +48,7 @@ requestController.verifyUser = async (req, res, next) => {
       res.locals.response = {
         firstName: data.firstName,
         lastName: data.lastName,
+        email: data.email,
         watchList: data.watchList
       };
 
@@ -60,6 +61,7 @@ requestController.verifyUser = async (req, res, next) => {
 
 requestController.addWatch = async (req, res, next) => {
   try {
+    console.log('Add Request', req.body);
     const { email, id } = req.body;
     const data = await User.findOneAndUpdate(
       { email: email },
@@ -72,8 +74,50 @@ requestController.addWatch = async (req, res, next) => {
       res.locals.response = {
         firstName: data.firstName,
         lastName: data.lastName,
+        email: data.email,
         watchList: data.watchList
       };
+
+    return next();
+
+  } catch (error) {
+    return next(error)
+  }
+};
+
+requestController.getWatch = async (req, res, next) => {
+  try {
+    console.log('GET WATCH', req.body);
+    const { email } = req.body;
+    const data = await User.findOne({
+      email: email
+    });
+
+    if (!data)
+      res.locals.response = false;
+    else
+      res.locals.response = data.watchList;
+
+    return next();
+
+  } catch (error) {
+    return next(error)
+  }
+};
+
+requestController.removeWatch = async (req, res, next) => {
+  try {
+    console.log('Remove WATCH', req.body);
+    const { email, watchList } = req.body;
+    const data = await User.findOneAndUpdate(
+      { email: email },
+      { $set: { 'watchList': watchList } },
+      { new: true });
+
+    if (!data)
+      res.locals.response = false;
+    else
+      res.locals.response = data.watchList;
 
     return next();
 
