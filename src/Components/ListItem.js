@@ -1,5 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
 
 function ListItem(props) {
   const itemID = props.crypto.id;
@@ -9,8 +8,8 @@ function ListItem(props) {
   const cirSupply = props.crypto.circulating_supply;
   const ath = props.crypto.ath;
   const low_24hr = props.crypto.low_24hr;
-  const buttonSymbol = props.fav ? "-" : "+";
-  const buttonColor = props.fav ? "bg-red-200" : "bg-green-200";
+  const buttonSymbol = props.fav ? '-' : '+';
+  const buttonColor = props.fav ? 'bg-red-200' : 'bg-green-200';
 
   const itemData = {
     image: imgSrc,
@@ -23,9 +22,9 @@ function ListItem(props) {
     id: itemID,
   };
 
-  const currencyFormatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  const currencyFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
     maximumFractionDigits: 4,
     minimumFractionDigits: 2,
   });
@@ -68,7 +67,7 @@ function ListItem(props) {
       </td>
       <td className="px-5 py-2 border-b border-gray-200 bg-white text-md">
         <p className="text-gray-900 whitespace-no-wrap">
-          {cirSupply.toLocaleString("en-US", {
+          {cirSupply.toLocaleString('en-US', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
           })}
@@ -97,7 +96,7 @@ function ListItem(props) {
           <span
             aria-hidden="true"
             className={
-              buttonColor + " absolute inset-0 opacity-50 rounded-full"
+              buttonColor + ' absolute inset-0 opacity-50 rounded-full'
             }
           ></span>
           <span className="relative">
