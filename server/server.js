@@ -17,6 +17,11 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/', (req,res) => {
+  return res.json('Landing Page for localhost:5000');
+})
+
+
 // LOGIN HANDLER
 app.post("/login", requestController.verifyUser, (req, res) => {
   console.log("Received Login request");
